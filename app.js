@@ -120,9 +120,11 @@
       cond.options.forEach((opt) => {
         const row = el("div", "opt");
 
+        // dải nhiệt để ở dòng phụ, không nhét vào pill - pill dài sẽ tràn trên máy hẹp
         const left = el("div", "opt__left");
-        left.appendChild(pill(opt.kind, opt.temp + (TEMP_RANGE[opt.kind] ? " · " + TEMP_RANGE[opt.kind] : "")));
-        if (opt.tempNote) left.appendChild(el("span", "opt__temp-note", opt.tempNote));
+        left.appendChild(pill(opt.kind, opt.temp));
+        const sub = [TEMP_RANGE[opt.kind], opt.tempNote].filter(Boolean).join(" · ");
+        if (sub) left.appendChild(el("span", "opt__temp-note", sub));
         row.appendChild(left);
 
         const right = el("div", "opt__right");
