@@ -175,6 +175,16 @@
       });
       chipsBox.appendChild(chip);
     });
+
+    // dải lọc cuộn ngang trên mobile: chỉ làm mờ mép phải khi còn chip bị khuất,
+    // nếu không chip cuối cùng lúc nào cũng mờ, trông như lỗi hiển thị
+    const syncFade = () => {
+      const end = chipsBox.scrollLeft + chipsBox.clientWidth >= chipsBox.scrollWidth - 2;
+      chipsBox.classList.toggle("is-end", end);
+    };
+    chipsBox.addEventListener("scroll", syncFade, { passive: true });
+    addEventListener("resize", syncFade);
+    syncFade();
   }
 
   function matchItems() {

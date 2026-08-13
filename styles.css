@@ -101,11 +101,16 @@ body {
   background: var(--bg);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  -webkit-tap-highlight-color: transparent;
 }
 
 h1, h2, h3 { margin: 0; line-height: 1.3; font-weight: 600; letter-spacing: -.01em; }
 p { margin: 0; }
 button, input, select { font: inherit; color: inherit; }
+
+/* Safari (nhất là iOS < 16) bỏ qua display:grid/flex trên <button> và vẫn áp
+   padding mặc định 1px 6px -> icon bên trong bị lệch. Chuẩn hoá lại từ gốc. */
+button { -webkit-appearance: none; appearance: none; }
 
 :focus-visible {
   outline: 2.5px solid var(--accent);
@@ -123,7 +128,11 @@ button, input, select { font: inherit; color: inherit; }
 /* ---------------------------------------------------------- app bar */
 .app-bar {
   position: sticky; top: 0; z-index: 40;
+  /* nền đặc trước, color-mix chỉ có từ Safari 16.2 / Chrome 111 -
+     thiếu dòng dự phòng này thanh tiêu đề sẽ trong suốt trên máy cũ */
+  background: var(--surface);
   background: color-mix(in srgb, var(--surface) 88%, transparent);
+  -webkit-backdrop-filter: saturate(1.6) blur(12px);
   backdrop-filter: saturate(1.6) blur(12px);
   border-bottom: 1px solid var(--line);
 }
@@ -210,8 +219,10 @@ main { padding: 28px 0 64px; }
 }
 
 .search-box input {
+  -webkit-appearance: none; appearance: none;
   flex: 1; min-width: 0;
   padding: 15px 14px; border: 0; background: none;
+  /* >= 16px: dưới mức này iOS tự phóng to trang khi bấm vào ô nhập */
   font-size: 16.5px; border-radius: var(--r-full);
 }
 .search-box input::placeholder { color: var(--text-3); }
@@ -219,12 +230,17 @@ main { padding: 28px 0 64px; }
 .search-box input::-webkit-search-cancel-button { display: none; }
 
 .search-box__clear {
-  flex: none; margin-right: 10px;
-  width: 32px; height: 32px; display: grid; place-items: center;
+  position: relative; flex: none; margin-right: 10px; padding: 0;
+  width: 32px; height: 32px;
   border: 0; border-radius: 50%; background: var(--bg-soft);
   color: var(--text-2); cursor: pointer;
 }
-.search-box__clear svg { width: 15px; height: 15px; }
+/* căn giữa bằng absolute: không phụ thuộc vào việc trình duyệt
+   có hỗ trợ grid/flex trên <button> hay không */
+.search-box__clear svg {
+  position: absolute; top: 0; right: 0; bottom: 0; left: 0; margin: auto;
+  width: 15px; height: 15px;
+}
 .search-box__clear:hover { background: var(--line); }
 
 /* ---------------------------------------------------------- chips */
@@ -257,9 +273,11 @@ main { padding: 28px 0 64px; }
   grid-template-columns: repeat(auto-fill, minmax(248px, 1fr));
 }
 
+/* dùng margin thay cho gap: Safari < 16 không cho <button> làm flex container,
+   khoảng cách bằng gap sẽ mất sạch trên máy đó */
 .item-card {
   text-align: left; cursor: pointer;
-  display: flex; flex-direction: column; gap: 12px;
+  display: flex; flex-direction: column;
   padding: 16px 18px;
   background: var(--surface);
   border: 1px solid var(--line);
@@ -277,7 +295,7 @@ main { padding: 28px 0 64px; }
 .item-card__name { font-size: 16px; font-weight: 600; letter-spacing: -.01em; }
 .item-card__meta { font-size: 12.5px; color: var(--text-3); margin-top: 3px; }
 
-.item-card__tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.item-card__tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
 
 .known-dot {
   flex: none; width: 18px; height: 18px; border-radius: 50%;
@@ -311,6 +329,9 @@ main { padding: 28px 0 64px; }
   border-radius: var(--r-md);
   overflow: hidden;
   background: var(--surface);
+  /* .cond-list là flex column: item có overflow != visible sẽ mất min-height:auto
+     nên bị co lại và cắt mất dòng cuối khi danh sách dài hơn khung cuộn */
+  flex: none;
 }
 
 .cond__state {
@@ -344,17 +365,19 @@ main { padding: 28px 0 64px; }
 .opt__note { font-size: 12.5px; color: var(--text-3); margin-top: 2px; line-height: 1.45; }
 
 /* ---------------------------------------------------------- sheet */
-.sheet { position: fixed; inset: 0; z-index: 60; display: flex; }
+.sheet { position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 60; display: flex; }
 
 .sheet__scrim {
-  position: absolute; inset: 0;
+  position: absolute; top: 0; right: 0; bottom: 0; left: 0;
   background: rgba(13, 25, 23, .45);
   animation: fade .2s ease;
 }
 
 .sheet__panel {
   position: relative; margin: auto;
-  width: min(560px, 100%); max-height: min(86vh, 780px);
+  /* % của khung fixed, không dùng vh: trên iOS 100vh tính cả phần bị thanh
+     địa chỉ che, bảng sẽ cao hơn vùng nhìn thấy và nuốt mất nút ở đáy */
+  width: min(560px, 100%); max-height: min(86%, 780px);
   display: flex; flex-direction: column;
   background: var(--surface);
   border-radius: var(--r-lg);
@@ -371,7 +394,7 @@ main { padding: 28px 0 64px; }
 }
 .sheet__name { font-size: 21px; margin-top: 8px; letter-spacing: -.02em; }
 
-.sheet__body { padding: 20px 22px; overflow-y: auto; }
+.sheet__body { padding: 20px 22px; overflow-y: auto; overscroll-behavior: contain; }
 
 .sheet__foot {
   padding: 14px 22px;
@@ -380,12 +403,14 @@ main { padding: 28px 0 64px; }
 }
 
 .icon-btn {
-  flex: none; width: 36px; height: 36px;
-  display: grid; place-items: center;
+  position: relative; flex: none; width: 36px; height: 36px; padding: 0;
   border: 0; border-radius: 50%;
   background: var(--bg-soft); color: var(--text-2); cursor: pointer;
 }
-.icon-btn svg { width: 17px; height: 17px; }
+.icon-btn svg {
+  position: absolute; top: 0; right: 0; bottom: 0; left: 0; margin: auto;
+  width: 17px; height: 17px;
+}
 .icon-btn:hover { background: var(--line); color: var(--text); }
 
 /* ---------------------------------------------------------- buttons */
@@ -424,7 +449,8 @@ main { padding: 28px 0 64px; }
 .field__label { font-size: 13px; font-weight: 600; color: var(--text-2); }
 
 .select {
-  appearance: none;
+  /* thiếu tiền tố -webkit-, Safari cũ vẫn vẽ mũi tên gốc -> hiện hai mũi tên */
+  -webkit-appearance: none; appearance: none;
   padding: 11px 38px 11px 14px;
   border: 1px solid var(--line-strong); border-radius: var(--r-md);
   background: var(--surface) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238a9694' stroke-width='2' stroke-linecap='round'><path d='m6 9 6 6 6-6'/></svg>") no-repeat right 12px center/16px;
@@ -516,7 +542,7 @@ kbd {
 .options { display: grid; gap: 10px; }
 
 .option {
-  display: flex; align-items: center; gap: 12px;
+  display: flex; align-items: center;
   padding: 14px 16px; text-align: left; width: 100%;
   border: 1.5px solid var(--line); border-radius: var(--r-md);
   background: var(--surface); cursor: pointer;
@@ -526,9 +552,12 @@ kbd {
 .option:hover:not(:disabled) { border-color: var(--accent); background: var(--accent-soft); }
 .option:disabled { cursor: default; }
 
+/* inline-grid + margin: nếu trình duyệt không cho <button> làm flex container
+   thì ô số vẫn nằm cùng dòng với đáp án, không rớt xuống dòng riêng */
 .option__key {
   flex: none; width: 26px; height: 26px; border-radius: 7px;
-  display: grid; place-items: center;
+  display: inline-grid; place-items: center; vertical-align: middle;
+  margin-right: 12px;
   background: var(--bg-soft); color: var(--text-2);
   font-size: 13px; font-weight: 700;
 }
@@ -562,7 +591,7 @@ kbd {
   position: relative;
 }
 .score-ring::after {
-  content: ""; position: absolute; inset: 9px;
+  content: ""; position: absolute; top: 9px; right: 9px; bottom: 9px; left: 9px;
   border-radius: 50%; background: var(--surface);
 }
 .score-ring span {
@@ -590,7 +619,7 @@ kbd {
 
   /* backdrop-filter tạo containing block mới, khiến .tabs (position: fixed)
      bị neo vào thanh tiêu đề thay vì vào viewport -> bỏ trên mobile */
-  .app-bar { backdrop-filter: none; background: var(--surface); }
+  .app-bar { -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--surface); }
   .app-bar__inner { padding: 10px var(--pad); }
   .brand__text small { display: none; }
 
@@ -598,16 +627,21 @@ kbd {
   .tabs {
     position: fixed; left: 0; right: 0; bottom: 0; z-index: 50;
     border-radius: 0; padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
+    background: var(--surface);
     background: color-mix(in srgb, var(--surface) 94%, transparent);
+    -webkit-backdrop-filter: saturate(1.6) blur(12px);
     backdrop-filter: saturate(1.6) blur(12px);
     border-top: 1px solid var(--line);
     gap: 0;
   }
+  /* xếp icon trên chữ bằng block + margin chứ không bằng flex-direction:
+     <button> trên Safari cũ không làm flex container, icon sẽ nằm cạnh chữ */
   .tab {
-    flex: 1; flex-direction: column; gap: 3px;
+    flex: 1; flex-direction: column; gap: 0;
     padding: 7px 4px; border-radius: var(--r-md); font-size: 11.5px;
   }
-  .tab svg { width: 20px; height: 20px; }
+  .tab svg { width: 20px; height: 20px; display: block; margin: 0 auto; }
+  .tab span { display: block; margin-top: 3px; }
   .tab.is-active { background: transparent; box-shadow: none; }
 
   main { padding: 20px 0 96px; }
@@ -623,6 +657,7 @@ kbd {
     -webkit-mask-image: linear-gradient(to right, #000 88%, transparent);
     mask-image: linear-gradient(to right, #000 88%, transparent);
   }
+  .chips.is-end { -webkit-mask-image: none; mask-image: none; }
   .chips::-webkit-scrollbar { display: none; }
   .chip { flex: none; scroll-snap-align: start; font-size: 13.5px; padding: 7px 14px; }
   .chip:last-child { margin-right: 12px; }
@@ -638,7 +673,7 @@ kbd {
 
   .sheet__panel {
     margin: auto 0 0; width: 100%;
-    max-height: 90vh;
+    max-height: 90%;
     border-radius: var(--r-lg) var(--r-lg) 0 0;
     animation: slide-up .26s cubic-bezier(.2, .8, .3, 1);
   }
@@ -655,6 +690,9 @@ kbd {
 
   .question__name { font-size: 19px; }
   .fact__label { width: 74px; }
+
+  /* 16px là ngưỡng để iOS không tự phóng to trang khi bấm vào ô chọn */
+  .select { font-size: 16px; }
 
   /* xếp dọc: flex-basis 180px sẽ trở thành chiều cao -> phải bỏ */
   .setup__row { flex-direction: column; align-items: stretch; }
