@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f766e">
+<title>Sổ tay Bảo quản &amp; Hạn sử dụng</title>
+<meta name="description" content="Tra cứu nhanh điều kiện bảo quản và hạn sử dụng thực phẩm, kèm chế độ học thẻ và kiểm tra kiến thức.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Bỏ qua, đến nội dung chính</a>
+
+<header class="app-bar">
+  <div class="app-bar__inner">
+    <div class="brand">
+      <span class="brand__mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3a9 9 0 1 0 9 9"></path><path d="M12 7v5l3.5 2"></path><path d="M16 3.5 21 5l-1.5 5"></path>
+        </svg>
+      </span>
+      <span class="brand__text">
+        <strong>Sổ tay Bảo quản &amp; HSD</strong>
+        <small>Tra cứu nhanh · Học tới khi thuộc</small>
+      </span>
+    </div>
+
+    <nav class="tabs" role="tablist" aria-label="Chế độ sử dụng">
+      <button class="tab is-active" role="tab" aria-selected="true" aria-controls="view-search" id="tab-search" data-view="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+        <span>Tra cứu</span>
+      </button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="view-cards" id="tab-cards" data-view="cards">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="14" height="13" rx="2"></rect><path d="M8 3h11a2 2 0 0 1 2 2v11"></path></svg>
+        <span>Học thẻ</span>
+      </button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="view-quiz" id="tab-quiz" data-view="quiz">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 9a3 3 0 1 1 4 2.8c-.7.3-1 .9-1 1.7v.5"></path><path d="M12 17.5h.01"></path><circle cx="12" cy="12" r="9"></circle></svg>
+        <span>Kiểm tra</span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ============================ TRA CỨU ============================ -->
+  <section class="view is-active" id="view-search" role="tabpanel" aria-labelledby="tab-search">
+    <div class="wrap">
+
+      <div class="search-box">
+        <svg class="search-box__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+        <input type="search" id="q" placeholder="Nhập tên thực phẩm…  (vd: la dua, tom, banh gao)"
+               autocomplete="off" spellcheck="false" aria-label="Tìm tên thực phẩm">
+        <button type="button" id="q-clear" class="search-box__clear" aria-label="Xoá từ khoá" hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"></path></svg>
+        </button>
+      </div>
+
+      <div class="chips" id="group-filter" role="group" aria-label="Lọc theo nhóm hàng"></div>
+
+      <p class="result-meta" id="result-meta"></p>
+
+      <div class="item-grid" id="results"></div>
+
+      <div class="empty" id="empty" hidden>
+        <p class="empty__title">Không tìm thấy mặt hàng nào</p>
+        <p class="empty__hint">Thử từ khoá ngắn hơn, hoặc gõ không dấu.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ HỌC THẺ ============================ -->
+  <section class="view" id="view-cards" role="tabpanel" aria-labelledby="tab-cards" hidden>
+    <div class="wrap wrap--narrow">
+
+      <div class="panel setup">
+        <div class="setup__row">
+          <label class="field">
+            <span class="field__label">Nhóm hàng</span>
+            <select id="fc-group" class="select"></select>
+          </label>
+          <label class="field">
+            <span class="field__label">Phạm vi</span>
+            <select id="fc-scope" class="select">
+              <option value="all">Tất cả thẻ</option>
+              <option value="unknown">Chỉ thẻ chưa thuộc</option>
+              <option value="known">Chỉ thẻ đã thuộc</option>
+            </select>
+          </label>
+          <button class="btn btn--primary" id="fc-start">Bắt đầu</button>
+        </div>
+        <p class="setup__note" id="fc-progress-note"></p>
+      </div>
+
+      <div id="fc-stage" hidden>
+        <div class="fc-head">
+          <span class="fc-count" id="fc-count"></span>
+          <div class="bar"><span class="bar__fill" id="fc-bar"></span></div>
+        </div>
+
+        <div class="flashcard" id="fc-card" tabindex="0" role="button" aria-label="Thẻ ghi nhớ, nhấn để lật">
+          <div class="flashcard__face flashcard__face--front">
+            <span class="pill pill--group" id="fc-group-badge"></span>
+            <h2 class="flashcard__name" id="fc-name"></h2>
+            <p class="flashcard__hint">Nhớ lại điều kiện bảo quản &amp; hạn sử dụng<br><span>Chạm hoặc nhấn Space để lật thẻ</span></p>
+          </div>
+          <div class="flashcard__face flashcard__face--back">
+            <h2 class="flashcard__name flashcard__name--sm" id="fc-name-back"></h2>
+            <div class="cond-list" id="fc-detail"></div>
+          </div>
+        </div>
+
+        <div class="fc-actions" id="fc-actions" hidden>
+          <button class="btn btn--danger-soft" id="fc-again">Chưa thuộc</button>
+          <button class="btn btn--success" id="fc-known">Đã thuộc</button>
+        </div>
+        <p class="kbd-hint">Phím tắt: <kbd>Space</kbd> lật thẻ · <kbd>1</kbd> chưa thuộc · <kbd>2</kbd> đã thuộc</p>
+      </div>
+
+      <div class="panel done" id="fc-done" hidden>
+        <h2 class="done__title">Xong bộ thẻ này rồi</h2>
+        <p class="done__text" id="fc-done-text"></p>
+        <div class="done__actions">
+          <button class="btn btn--primary" id="fc-restart">Học lại</button>
+          <button class="btn" id="fc-review-unknown">Ôn riêng thẻ chưa thuộc</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ KIỂM TRA ============================ -->
+  <section class="view" id="view-quiz" role="tabpanel" aria-labelledby="tab-quiz" hidden>
+    <div class="wrap wrap--narrow">
+
+      <div class="panel setup" id="quiz-setup">
+        <div class="setup__row">
+          <label class="field">
+            <span class="field__label">Nhóm hàng</span>
+            <select id="qz-group" class="select"></select>
+          </label>
+          <label class="field">
+            <span class="field__label">Số câu</span>
+            <select id="qz-count" class="select">
+              <option value="10">10 câu</option>
+              <option value="20" selected>20 câu</option>
+              <option value="30">30 câu</option>
+              <option value="0">Tất cả</option>
+            </select>
+          </label>
+          <button class="btn btn--primary" id="qz-start">Bắt đầu</button>
+        </div>
+        <p class="setup__note">Mỗi câu hỏi hạn sử dụng của một mặt hàng ở một trạng thái và điều kiện bảo quản cụ thể. Câu trả lời sai sẽ được đánh dấu <em>chưa thuộc</em> để ôn lại ở phần Học thẻ.</p>
+      </div>
+
+      <div id="qz-stage" hidden>
+        <div class="qz-head">
+          <span class="fc-count" id="qz-count-label"></span>
+          <span class="score" id="qz-score"></span>
+        </div>
+        <div class="bar"><span class="bar__fill" id="qz-bar"></span></div>
+
+        <div class="panel question" id="qz-question">
+          <span class="pill pill--group" id="qz-group-badge"></span>
+          <h2 class="question__name" id="qz-name"></h2>
+          <div class="question__facts" id="qz-facts"></div>
+          <p class="question__ask">Hạn sử dụng tối đa là bao lâu?</p>
+          <div class="options" id="qz-options"></div>
+          <div class="feedback" id="qz-feedback" hidden></div>
+        </div>
+
+        <div class="qz-actions">
+          <button class="btn btn--primary" id="qz-next" hidden>Câu tiếp theo</button>
+          <button class="btn btn--ghost" id="qz-quit">Kết thúc</button>
+        </div>
+        <p class="kbd-hint">Phím tắt: <kbd>1</kbd>–<kbd>4</kbd> chọn đáp án · <kbd>Enter</kbd> câu tiếp</p>
+      </div>
+
+      <div class="panel done" id="qz-result" hidden>
+        <div class="score-ring" id="qz-ring"><span id="qz-ring-text"></span></div>
+        <h2 class="done__title" id="qz-result-title"></h2>
+        <p class="done__text" id="qz-result-text"></p>
+        <div class="done__actions">
+          <button class="btn btn--primary" id="qz-retry-wrong">Làm lại câu sai</button>
+          <button class="btn" id="qz-new">Bài mới</button>
+        </div>
+        <div class="review" id="qz-review"></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============================ CHI TIẾT ============================ -->
+<div class="sheet" id="sheet" hidden>
+  <div class="sheet__scrim" data-close></div>
+  <div class="sheet__panel" role="dialog" aria-modal="true" aria-labelledby="sheet-name">
+    <div class="sheet__head">
+      <div>
+        <span class="pill pill--group" id="sheet-group"></span>
+        <h2 class="sheet__name" id="sheet-name"></h2>
+      </div>
+      <button class="icon-btn" data-close aria-label="Đóng">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"></path></svg>
+      </button>
+    </div>
+    <div class="sheet__body cond-list" id="sheet-body"></div>
+    <div class="sheet__foot">
+      <button class="btn btn--success" id="sheet-known"></button>
+    </div>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

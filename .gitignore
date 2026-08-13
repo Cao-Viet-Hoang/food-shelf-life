@@ -1,0 +1,17 @@
+# ---------------------------------------------------------------
+# KHÔNG đưa tài liệu nguồn và công cụ xử lý lên repo công khai:
+# các tệp này còn nguyên tên thương hiệu, mã tài liệu nội bộ và
+# chữ ký người ban hành. Chỉ data.js (đã làm sạch) được publish.
+# ---------------------------------------------------------------
+*.pdf
+parse_pdf.py
+build_data.py
+parsed_data.json
+parsed_data.tsv
+verification_report.txt
+_raw_cell_dump.json
+_shot.html
+
+# hệ thống
+Thumbs.db
+.DS_Store
