@@ -981,6 +981,43 @@ const FOOD_DATA = [
             ]
           }
         ]
+      },
+      {
+        "id": "rau-cu-28",
+        "name": "Hành lá sấy khô",
+        "group": "rau-cu",
+        "conditions": [
+          {
+            "state": "Bảo quản, Chưa mở bao bì",
+            "options": [
+              {
+                "kind": "thuong",
+                "temp": "Nhiệt độ thường",
+                "value": "Theo bao bì"
+              }
+            ]
+          },
+          {
+            "state": "Bảo quản, Đã mở bao bì",
+            "options": [
+              {
+                "kind": "thuong",
+                "temp": "Nhiệt độ thường",
+                "value": "45 ngày"
+              }
+            ]
+          },
+          {
+            "state": "Đã sơ chế/ chế biến (đã xay nhuyễn)",
+            "options": [
+              {
+                "kind": "thuong",
+                "temp": "Nhiệt độ thường",
+                "value": "15 ngày"
+              }
+            ]
+          }
+        ]
       }
     ]
   },
@@ -2415,6 +2452,164 @@ const FOOD_DATA = [
             ]
           }
         ]
+      },
+      {
+        "id": "gia-vi-42",
+        "name": "Gelatine lá bạc",
+        "group": "gia-vi",
+        "conditions": [
+          {
+            "state": "Bảo quản, Chưa mở bao bì",
+            "options": [
+              {
+                "kind": "thuong",
+                "temp": "Nhiệt độ thường",
+                "value": "Theo bao bì"
+              }
+            ]
+          },
+          {
+            "state": "Bảo quản, Đã mở bao bì",
+            "options": [
+              {
+                "kind": "thuong",
+                "temp": "Nhiệt độ thường",
+                "value": "3 Tháng"
+              }
+            ]
+          },
+          {
+            "state": "Đã Ngâm nước, đang ngâm nước",
+            "options": [
+              {
+                "kind": "thuong",
+                "temp": "Nhiệt độ thường",
+                "value": "Trong ngày"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "gia-vi-43",
+        "name": "Sinh tố quýt mật ông",
+        "group": "gia-vi",
+        "conditions": [
+          {
+            "state": "Chưa mở bao, bao bì nguyên vẹn",
+            "options": [
+              {
+                "kind": "thuong",
+                "temp": "Nhiệt độ thường",
+                "value": "Theo bao bì"
+              }
+            ]
+          },
+          {
+            "state": "Đã khui bao bì (còn trong chai)",
+            "options": [
+              {
+                "kind": "mat",
+                "temp": "Tủ mát",
+                "value": "2 tháng"
+              },
+              {
+                "kind": "thuong",
+                "temp": "Nhiệt độ thường",
+                "value": "21 ngày"
+              }
+            ]
+          },
+          {
+            "state": "Đã khui bao bì (cho ra cont)",
+            "options": [
+              {
+                "kind": "mat",
+                "temp": "Tủ mát",
+                "value": "2 ngày"
+              },
+              {
+                "kind": "thuong",
+                "temp": "Nhiệt độ thường",
+                "value": "Trong ngày"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "gia-vi-44",
+        "name": "Bột trà vải",
+        "group": "gia-vi",
+        "conditions": [
+          {
+            "state": "Chưa mở bao, bao bì nguyên vẹn",
+            "options": [
+              {
+                "kind": "thuong",
+                "temp": "Nhiệt độ thường",
+                "value": "Theo bao bì"
+              }
+            ]
+          },
+          {
+            "state": "Đã mở bao (Chưa pha với nước) nhưng cột kín khi không sử dụng",
+            "options": [
+              {
+                "kind": "thuong",
+                "temp": "Nhiệt độ thường",
+                "value": "1 tháng"
+              }
+            ]
+          },
+          {
+            "state": "Đã chế biến (đã pha)",
+            "options": [
+              {
+                "kind": "mat",
+                "temp": "Tủ mát",
+                "value": "2 ngày"
+              },
+              {
+                "kind": "thuong",
+                "temp": "Nhiệt độ thường",
+                "value": "6 giờ"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "gia-vi-45",
+        "name": "Vải lon",
+        "group": "gia-vi",
+        "conditions": [
+          {
+            "state": "Chưa mở bao, bao bì nguyên vẹn",
+            "options": [
+              {
+                "kind": "thuong",
+                "temp": "Nhiệt độ thường",
+                "value": "Theo bao bì"
+              }
+            ]
+          },
+          {
+            "state": "Đã khui bao bì (cho ra cont khác), không được để trong lon khi đã khui nắp",
+            "options": [
+              {
+                "kind": "mat",
+                "temp": "Tủ mát",
+                "value": "5 ngày"
+              },
+              {
+                "kind": "thuong",
+                "temp": "Nhiệt độ thường",
+                "value": "Trong ngày"
+              }
+            ]
+          }
+        ]
       }
     ]
   },
@@ -2482,6 +2677,17 @@ const FOOD_DATA = [
               }
             ],
             "note": "Chỉ áp dụng cho NH bán deli bằng máy deli"
+          },
+          {
+            "state": "Tôm đã sơ chế (cắt lưng)",
+            "options": [
+              {
+                "kind": "mat",
+                "temp": "Tủ mát",
+                "value": "Trong ngày",
+                "tempNote": "ướp 1 tôm + 2 đá + nước sấp"
+              }
+            ]
           }
         ]
       },
@@ -3467,6 +3673,59 @@ const FOOD_DATA = [
             ]
           }
         ]
+      },
+      {
+        "id": "dong-lanh-24",
+        "name": "Má đùi gà rút xương/ đùi gà",
+        "group": "dong-lanh",
+        "conditions": [
+          {
+            "state": "Chưa mở bao, bao bì nguyên vẹn",
+            "options": [
+              {
+                "kind": "dong",
+                "temp": "Tủ đông",
+                "value": "Theo bao bì"
+              }
+            ]
+          },
+          {
+            "state": "Rã đông chưa mở bao/đã mở bao bì/cắt nhỏ/chia phần.",
+            "options": [
+              {
+                "kind": "mat",
+                "temp": "Tủ mát",
+                "value": "2 ngày"
+              }
+            ]
+          },
+          {
+            "state": "Đã ướp gia vị (của gà rán)",
+            "options": [
+              {
+                "kind": "mat",
+                "temp": "Tủ mát",
+                "value": "16 giờ"
+              }
+            ]
+          },
+          {
+            "state": "Đã chế biến (Gà rán đã chế biến)",
+            "options": [
+              {
+                "kind": "mat",
+                "temp": "Tủ mát",
+                "value": "32 giờ",
+                "note": "Tính từ thời điểm chiên gà xong. Cuối ngày mới được bảo quản tủ mát"
+              },
+              {
+                "kind": "thuong",
+                "temp": "Nhiệt độ thường",
+                "value": "Trong ngày"
+              }
+            ]
+          }
+        ]
       }
     ]
   },
@@ -3984,6 +4243,231 @@ const FOOD_DATA = [
                 "kind": "mat",
                 "temp": "Tủ mát",
                 "value": "5 ngày"
+              },
+              {
+                "kind": "thuong",
+                "temp": "Nhiệt độ thường",
+                "value": "Trong ngày"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "mat-19",
+        "name": "Sữa tươi không đường (theo panna cotta)",
+        "group": "mat",
+        "conditions": [
+          {
+            "state": "Bảo quản, Chưa mở bao bì",
+            "options": [
+              {
+                "kind": "thuong",
+                "temp": "Nhiệt độ thường",
+                "value": "Theo bao bì"
+              }
+            ]
+          },
+          {
+            "state": "Bảo quản, Đã mở bao bì",
+            "options": [
+              {
+                "kind": "mat",
+                "temp": "Tủ mát",
+                "value": "36 giờ"
+              },
+              {
+                "kind": "thuong",
+                "temp": "Nhiệt độ thường",
+                "value": "Trong ngày"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "mat-20",
+        "name": "Sữa tươi không đường (theo tôm rán - gà rán)",
+        "group": "mat",
+        "conditions": [
+          {
+            "state": "Bảo quản, Chưa mở bao bì",
+            "options": [
+              {
+                "kind": "thuong",
+                "temp": "Nhiệt độ thường",
+                "value": "Theo bao bì"
+              }
+            ]
+          },
+          {
+            "state": "Bảo quản, Đã mở bao bì",
+            "options": [
+              {
+                "kind": "mat",
+                "temp": "Tủ mát",
+                "value": "48 giờ"
+              },
+              {
+                "kind": "thuong",
+                "temp": "Nhiệt độ thường",
+                "value": "Trong ngày"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "mat-21",
+        "name": "Whipping cream pleasure gold",
+        "group": "mat",
+        "conditions": [
+          {
+            "state": "Bảo quản, Chưa mở bao bì",
+            "options": [
+              {
+                "kind": "mat",
+                "temp": "Tủ mát",
+                "value": "Theo bao bì"
+              }
+            ]
+          },
+          {
+            "state": "Bảo quản, Đã mở bao bì",
+            "options": [
+              {
+                "kind": "mat",
+                "temp": "Tủ mát",
+                "value": "3 ngày",
+                "note": "Phải được bọc kín"
+              },
+              {
+                "kind": "thuong",
+                "temp": "Nhiệt độ thường",
+                "value": "Trong ngày"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "mat-22",
+        "name": "BTP panna cotta",
+        "group": "mat",
+        "conditions": [
+          {
+            "state": "Chưa cho mứt lên bề mặt",
+            "options": [
+              {
+                "kind": "mat",
+                "temp": "Tủ mát",
+                "value": "3 ngày"
+              }
+            ]
+          },
+          {
+            "state": "Đã cho mứt lên bề mặt",
+            "options": [
+              {
+                "kind": "mat",
+                "temp": "Tủ mát",
+                "value": "Trong ngày"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "mat-23",
+        "name": "BTP giấm xốt kem hành",
+        "group": "mat",
+        "conditions": [
+          {
+            "state": "Bảo quản, Chưa mở bao bì",
+            "options": [
+              {
+                "kind": "thuong",
+                "temp": "Nhiệt độ thường",
+                "value": "Theo bao bì"
+              }
+            ]
+          },
+          {
+            "state": "Bảo quản, Đã mở bao bì",
+            "options": [
+              {
+                "kind": "thuong",
+                "temp": "Nhiệt độ thường",
+                "value": "2 Tháng"
+              }
+            ]
+          },
+          {
+            "state": "Đã pha thành BTP xốt kem hành",
+            "options": [
+              {
+                "kind": "mat",
+                "temp": "Tủ mát",
+                "value": "5 ngày"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "mat-24",
+        "name": "Xốt gà rán - xốt cay ngọt",
+        "group": "mat",
+        "conditions": [
+          {
+            "state": "Bảo quản, Chưa mở bao bì",
+            "options": [
+              {
+                "kind": "thuong",
+                "temp": "Nhiệt độ thường",
+                "value": "Theo bao bì"
+              }
+            ]
+          },
+          {
+            "state": "Bảo quản, Đã mở bao bì",
+            "options": [
+              {
+                "kind": "mat",
+                "temp": "Tủ mát",
+                "value": "15 ngày"
+              },
+              {
+                "kind": "thuong",
+                "temp": "Nhiệt độ thường",
+                "value": "Trong ngày"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "mat-25",
+        "name": "Xốt gà rán - xốt phô mai",
+        "group": "mat",
+        "conditions": [
+          {
+            "state": "Bảo quản, Chưa mở bao bì",
+            "options": [
+              {
+                "kind": "mat",
+                "temp": "Tủ mát",
+                "value": "Theo bao bì"
+              }
+            ]
+          },
+          {
+            "state": "Bảo quản, Đã mở bao bì",
+            "options": [
+              {
+                "kind": "mat",
+                "temp": "Tủ mát",
+                "value": "7 ngày"
               },
               {
                 "kind": "thuong",

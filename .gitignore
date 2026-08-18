@@ -12,6 +12,15 @@ verification_report.txt
 _raw_cell_dump.json
 _shot.html
 
+# dữ liệu tạm dùng khi rà soát trước khi gộp vào parsed_data.json
+new_items_staging.json
+
 # hệ thống
 Thumbs.db
 .DS_Store
+__pycache__/
+
+# không thuộc dự án food-shelf-life (lẫn vào thư mục làm việc)
+GIAO_TRINH.md
+analyze_learning.py
+build_curriculum.py
