@@ -163,7 +163,10 @@
       <div id="qz-stage" hidden>
         <div class="qz-head">
           <span class="fc-count" id="qz-count-label"></span>
-          <span class="score" id="qz-score"></span>
+          <div class="qz-head__right">
+            <span class="streak" id="qz-streak" hidden></span>
+            <span class="score" id="qz-score"></span>
+          </div>
         </div>
         <div class="bar"><span class="bar__fill" id="qz-bar"></span></div>
 
@@ -173,7 +176,7 @@
           <div class="question__facts" id="qz-facts"></div>
           <p class="question__ask">Hạn sử dụng tối đa là bao lâu?</p>
           <div class="options" id="qz-options"></div>
-          <div class="feedback" id="qz-feedback" hidden></div>
+          <div class="feedback" id="qz-feedback" role="status" aria-live="polite" hidden></div>
         </div>
 
         <div class="qz-actions">

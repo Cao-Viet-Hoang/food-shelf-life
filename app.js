@@ -69,7 +69,7 @@
   /** Mọi giá trị hạn sử dụng có trong tài liệu - dùng làm đáp án nhiễu. */
   const ALL_VALUES = Array.from(
     new Set(ITEMS.flatMap((i) => i.conditions.flatMap((c) => c.options.map((o) => o.value))))
-  );
+  ).filter((v) => v !== "Theo bao bì");
 
   const unitOf = (value) => {
     const m = /(giờ|ngày|tháng|phút)\s*$/.exec(value);
@@ -423,6 +423,7 @@
     correct: 0,
     wrong: [],
     answered: false,
+    streak: 0,
   };
 
   const qzGroupSel = $("#qz-group");
@@ -443,6 +444,7 @@
         // các đáp án đúng khác trong cùng trạng thái không được làm đáp án nhiễu
         const siblings = cond.options.map((o) => o.value);
         cond.options.forEach((opt) => {
+          if (opt.value === "Theo bao bì") return; // không có mốc thời gian cụ thể nên không đưa vào câu hỏi
           pool.push({ item, cond, opt, siblings });
         });
       });
@@ -479,6 +481,8 @@
     qz.idx = 0;
     qz.correct = 0;
     qz.wrong = [];
+    qz.streak = 0;
+    $("#qz-streak").hidden = true;
     qzSetup.hidden = true;
     qzResult.hidden = true;
     qzStage.hidden = false;
@@ -502,10 +506,22 @@
     const facts = $("#qz-facts");
     facts.replaceChildren();
     facts.appendChild(fact("Trạng thái", q.cond.state));
-    facts.appendChild(
-      fact("Bảo quản", q.opt.temp + (TEMP_RANGE[q.opt.kind] ? ` (${TEMP_RANGE[q.opt.kind]})` : "") +
-        (q.opt.tempNote ? ` — ${q.opt.tempNote}` : ""))
-    );
+
+    // dòng bảo quản dùng pill màu (thường/mát/đông) để nhận ra ngay, không phải đọc hết chữ
+    const storageValue = el("span", "fact__value--storage");
+    storageValue.appendChild(pill(q.opt.kind, q.opt.temp));
+    const extra = [TEMP_RANGE[q.opt.kind], q.opt.tempNote].filter(Boolean).join(" · ");
+    if (extra) storageValue.appendChild(el("span", "fact__extra", extra));
+    const storageRow = el("div", "fact");
+    storageRow.appendChild(el("span", "fact__label", "Bảo quản"));
+    storageRow.appendChild(storageValue);
+    facts.appendChild(storageRow);
+
+    // đổi câu hỏi nên thấy chuyển động nhẹ, không giật cục
+    const panel = $("#qz-question");
+    panel.classList.remove("is-entering");
+    void panel.offsetWidth;
+    panel.classList.add("is-entering");
 
     qzOptions.replaceChildren();
     q.choices.forEach((choice, n) => {
@@ -542,10 +558,16 @@
 
     if (isRight) {
       qz.correct++;
+      qz.streak++;
       qzFeedback.className = "feedback feedback--ok";
-      qzFeedback.textContent = "Chính xác!";
+      qzFeedback.replaceChildren(
+        el("strong", null, "Chính xác!"),
+        // vẫn nêu lý do khi đúng - nhớ được lâu hơn là chỉ biết đúng/sai
+        document.createTextNode(q.opt.note ? ` ${q.opt.note}` : "")
+      );
     } else {
       qz.wrong.push({ q, picked: choice });
+      qz.streak = 0;
       store.set(q.item.id, false); // sai thì đưa lại vào nhóm chưa thuộc
       qzFeedback.className = "feedback feedback--bad";
       qzFeedback.replaceChildren(
@@ -559,6 +581,10 @@
     qzNextBtn.hidden = false;
     qzNextBtn.focus();
     $("#qz-score").textContent = `Đúng ${qz.correct}`;
+
+    const streakEl = $("#qz-streak");
+    streakEl.hidden = qz.streak < 2;
+    if (qz.streak >= 2) streakEl.textContent = `Chuỗi đúng ${qz.streak}`;
   }
 
   function nextQuestion() {

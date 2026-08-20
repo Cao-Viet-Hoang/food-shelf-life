@@ -466,7 +466,9 @@ main { padding: 28px 0 64px; }
   margin: 22px 2px 12px;
 }
 .fc-count { font-size: 13.5px; font-weight: 600; color: var(--text-2); white-space: nowrap; }
-.score { margin-left: auto; font-size: 13.5px; font-weight: 600; color: var(--text-2); }
+.qz-head__right { margin-left: auto; display: flex; align-items: center; gap: 14px; }
+.score { font-size: 13.5px; font-weight: 600; color: var(--text-2); white-space: nowrap; }
+.streak { font-size: 13.5px; font-weight: 700; color: var(--warm); white-space: nowrap; }
 
 .bar {
   flex: 1; height: 6px; border-radius: var(--r-full);
@@ -526,18 +528,35 @@ kbd {
 
 /* ---------------------------------------------------------- quiz */
 .question { margin-top: 14px; }
+.question.is-entering { animation: q-in .22s ease; }
+@keyframes q-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
 .question__name { font-size: 22px; margin: 10px 0 14px; letter-spacing: -.02em; }
 
-.question__facts { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+/* khung "đề bài" tách biệt khỏi câu hỏi thật, để mắt đọc dữ kiện trước khi trả lời */
+.question__facts {
+  display: flex; flex-direction: column; gap: 9px;
+  margin-bottom: 18px; padding: 13px 15px;
+  background: var(--surface-2); border: 1px solid var(--line);
+  border-radius: var(--r-md);
+}
 
 .fact {
-  display: flex; gap: 10px; align-items: baseline;
+  display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap;
   font-size: 14.5px;
 }
 .fact__label { flex: none; width: 82px; color: var(--text-3); font-size: 13px; }
 .fact__value { color: var(--text); font-weight: 500; }
 
-.question__ask { font-size: 15px; font-weight: 600; margin-bottom: 12px; }
+/* dòng bảo quản: dùng pill màu (thường/mát/đông) sẵn có để nhận ra ngay,
+   không phải đọc hết chữ mới biết nóng/lạnh */
+.fact__value--storage { display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.fact__extra { color: var(--text-3); font-size: 13px; }
+
+.question__ask {
+  font-size: 16.5px; font-weight: 700; color: var(--text);
+  margin-bottom: 14px; padding-top: 2px;
+}
 
 .options { display: grid; gap: 10px; }
 
@@ -564,8 +583,13 @@ kbd {
 
 .option.is-correct { border-color: var(--ok); background: var(--ok-soft); }
 .option.is-correct .option__key { background: var(--ok); color: var(--surface); }
-.option.is-wrong { border-color: var(--bad); background: var(--bad-soft); }
+.option.is-wrong { border-color: var(--bad); background: var(--bad-soft); animation: shake .32s; }
 .option.is-wrong .option__key { background: var(--bad); color: var(--surface); }
+
+@keyframes shake {
+  20%, 60% { transform: translateX(-3px); }
+  40%, 80% { transform: translateX(3px); }
+}
 
 .feedback {
   margin-top: 16px; padding: 13px 16px;
